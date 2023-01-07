@@ -24,7 +24,9 @@ const AddBook = ({ shelves, authors }) => {
 
   return (
     <Box>
-      <Text as="h1">Add a new book</Text>
+      <Heading as="h1" mb="5">
+        Add a new book
+      </Heading>
       <AddBookForm onSave={onBookSave} authors={authors} shelves={shelves} />
     </Box>
   );
