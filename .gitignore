@@ -4,3 +4,4 @@ node_modules
 .next/static
 .next/cache
 .next/server
+.next/**
