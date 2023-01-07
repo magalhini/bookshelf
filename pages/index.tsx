@@ -1,7 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import NextLink from "next/link";
-import { Box, Text, Heading, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Heading,
+  Flex,
+  Link,
+  List,
+  ListItem,
+} from "@chakra-ui/react";
 import { useMe } from "../lib/hooks";
 
 const Home: NextPage = () => {
@@ -20,8 +28,26 @@ const Home: NextPage = () => {
           <Heading>Bookshelfy</Heading>
           <Box my={10}>
             {loading && <Text>...</Text>}
-            {user && <Text fontSize="xxxl">Welcome {user.firstName}</Text>}
-            <NextLink href="/bookshelf/all">View all Bookshelves</NextLink>
+            {user && <Heading size="md">Welcome {user.firstName}</Heading>}
+            <Box mt="10">
+              <List>
+                <ListItem>
+                  <NextLink href="/bookshelf/all">
+                    <Link color="teal.500">View all bookshelves</Link>
+                  </NextLink>
+                </ListItem>
+                <ListItem>
+                  <NextLink href="/bookshelf/add-book">
+                    <Link color="teal.500">Add a new book</Link>
+                  </NextLink>
+                </ListItem>
+                <ListItem>
+                  <NextLink href="/authors/add">
+                    <Link color="teal.500">Add a new author</Link>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </Box>
           </Box>
         </Flex>
       </Box>

@@ -19,20 +19,19 @@ const AllBooks = ({ shelves }) => {
                 {shelf.name}
               </Text>
 
-              {shelf.BooksOnShelves.length === 0 && (
-                <p>No books on this shelf</p>
-              )}
-
-              {shelf.BooksOnShelves.map((bookItem) => (
-                <List key={bookItem.book.bookId} maxWidth="40em" spacing={2}>
-                  <ListItem key={bookItem.book.id}>
-                    <Text fontSize="2xl">{bookItem.book.title}</Text>
+              {shelf.books.map((bookItem) => (
+                <List
+                  key={`book-${bookItem.id}`}
+                  maxWidth="40em"
+                  mb={3}
+                  spacing={2}
+                >
+                  <ListItem>
+                    <Text fontSize="2xl">{bookItem.title}</Text>
                     <Flex justifyContent="space-between">
+                      <Text fontStyle="italic">by {bookItem.author.name}</Text>
                       <Text fontStyle="italic">
-                        by {bookItem.book.author.name}
-                      </Text>
-                      <Text fontStyle="italic">
-                        on {formatDate(bookItem.book.createdAt)}
+                        on {formatDate(bookItem.createdAt)}
                       </Text>
                     </Flex>
                   </ListItem>
@@ -66,16 +65,12 @@ export const getServerSideProps = async ({ query, req }) => {
       userId: user.id,
     },
     include: {
-      BooksOnShelves: {
+      books: {
         select: {
-          book: {
-            select: {
-              title: true,
-              author: true,
-              createdAt: true,
-              id: true,
-            },
-          },
+          title: true,
+          author: true,
+          createdAt: true,
+          id: true,
         },
       },
     },

@@ -27,7 +27,12 @@ const AddBook = ({ shelves, authors }) => {
       <Heading as="h1" mb="5">
         Add a new book
       </Heading>
-      <AddBookForm onSave={onBookSave} authors={authors} shelves={shelves} />
+      <AddBookForm
+        onCancel={() => {}}
+        onSave={onBookSave}
+        authors={authors}
+        shelves={shelves}
+      />
     </Box>
   );
 };

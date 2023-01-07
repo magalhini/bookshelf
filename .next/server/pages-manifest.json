@@ -2,5 +2,9 @@
   "/_middleware": "pages/_middleware.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/_document": "pages/_document.js",
+  "/bookshelf/all": "pages/bookshelf/all.js",
+  "/": "pages/index.js",
+  "/bookshelf/add-book": "pages/bookshelf/add-book.js",
+  "/api/me": "pages/api/me.js"
 }

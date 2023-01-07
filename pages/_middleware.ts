@@ -3,7 +3,7 @@
 
 import { NextResponse } from "next/server";
 
-const signedinPages = ["/", "/bookshelf", "/bookshelves"];
+const signedinPages = ["/", "/bookshelf", "/bookshelves", "/authors/add"];
 
 export default function middleware(req) {
   if (signedinPages.find((p) => p === req.nextUrl.pathname)) {

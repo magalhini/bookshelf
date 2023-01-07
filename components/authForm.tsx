@@ -39,7 +39,7 @@ const AuthForm: FC<{ mode: Auth }> = ({ mode }) => {
   };
 
   return (
-    <Box bg="gray.50" color="black">
+    <Flex direction="column" bg="gray.50" color="black">
       <Box padding="50px" bg="gray.100" borderRadius="6px">
         <form onSubmit={handleSubmit}>
           <span>
@@ -56,6 +56,7 @@ const AuthForm: FC<{ mode: Auth }> = ({ mode }) => {
             />
             <Button
               type="submit"
+              colorScheme="teal"
               marginTop="10px"
               color="white"
               bg="green.500"
@@ -72,7 +73,7 @@ const AuthForm: FC<{ mode: Auth }> = ({ mode }) => {
           </span>
         </form>
       </Box>
-    </Box>
+    </Flex>
   );
 };
 

@@ -19,9 +19,13 @@ export default validateRoute(async (req, res, user) => {
     data: {
       title: values.title,
       genre: values.genre,
-      rating: values.rating,
       year: parseInt(values.year, 10),
       cover: "",
+      Shelf: {
+        connect: {
+          id: parseInt(values.shelf),
+        },
+      },
       author: {
         connect: {
           id: parseInt(values.author),
