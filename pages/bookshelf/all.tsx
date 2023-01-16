@@ -74,23 +74,10 @@ export const getServerSideProps = async ({ query, req }) => {
         },
       },
     },
+    orderBy: {
+      name: "asc",
+    },
   });
-
-  // const shelves = await prisma.shelf.findMany({
-  //   where: {
-  //     userId: user.id,
-  //   },
-  //   include: {
-  //     books: {
-  //       select: {
-  //         title: true,
-  //         author: true,
-  //         createdAt: true,
-  //         id: true,
-  //       },
-  //     },
-  //   },
-  // });
 
   return {
     props: {

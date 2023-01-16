@@ -13,8 +13,11 @@ import {
 import { useMe } from "../lib/hooks";
 
 const Home: NextPage = () => {
-  const { user, error, loading } = useMe();
-  console.log(user);
+  const { user, isError, isLoading } = useMe();
+
+  if (isError) {
+    return <h2>Something went wrong</h2>;
+  }
 
   return (
     <Box>
@@ -27,7 +30,7 @@ const Home: NextPage = () => {
         <Flex flexDirection="column">
           <Heading>Bookshelfy</Heading>
           <Box my={10}>
-            {loading && <Text>...</Text>}
+            {isLoading && <Text>...</Text>}
             {user && <Heading size="md">Welcome {user.firstName}</Heading>}
             <Box mt="10">
               <List>

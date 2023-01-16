@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Text,
@@ -24,9 +24,9 @@ type FormValues = {
 
 const AddAuthor: React.FC<AddAuthorProps> = ({ onSave }) => {
   const router = useRouter();
+  const [error, setError] = useState("");
 
   const onAuthorSave = async (authorData) => {
-    console.log(authorData);
     fetch("/api/author/create", {
       method: "POST",
       body: JSON.stringify(authorData),
@@ -36,6 +36,9 @@ const AddAuthor: React.FC<AddAuthorProps> = ({ onSave }) => {
         if (res.authorId) {
           router.push("/bookshelf/all");
         }
+      })
+      .catch((err) => {
+        setError(err);
       });
   };
 

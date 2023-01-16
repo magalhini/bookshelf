@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flex, Text, Box, Heading } from "@chakra-ui/react";
 import fetcher from "../../lib/fetcher";
 import { validateToken } from "../../lib/auth";
@@ -8,6 +8,7 @@ import AddBookForm from "../../components/addBook";
 
 const AddBook = ({ shelves, authors }) => {
   const router = useRouter();
+  const [error, setError] = useState("");
 
   const onBookSave = async (bookData) => {
     fetch("/api/book/create", {
@@ -19,6 +20,10 @@ const AddBook = ({ shelves, authors }) => {
         if (res.bookId) {
           router.push("/bookshelf/all");
         }
+      })
+      .catch((err) => {
+        console.log("err", err);
+        setError(err);
       });
   };
 
@@ -28,6 +33,7 @@ const AddBook = ({ shelves, authors }) => {
         Add a new book
       </Heading>
       <AddBookForm
+        error={error}
         onCancel={() => {}}
         onSave={onBookSave}
         authors={authors}
@@ -53,7 +59,11 @@ export const getServerSideProps = async ({ query, req }) => {
     };
   }
 
-  const authors = await prisma.author.findMany();
+  const authors = await prisma.author.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
   const shelves = await prisma.shelf.findMany({
     where: {
       userId: user.id,

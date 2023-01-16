@@ -15,24 +15,27 @@ export default validateRoute(async (req, res, user) => {
     return;
   }
 
-  const book = await prisma.book.create({
-    data: {
-      title: values.title,
-      genre: values.genre,
-      year: parseInt(values.year, 10),
-      cover: "",
-      Shelf: {
-        connect: {
-          id: parseInt(values.shelf),
+  try {
+    const book = await prisma.book.create({
+      data: {
+        title: values.title,
+        genre: values.genre,
+        year: parseInt(values.year, 10),
+        cover: "",
+        Shelf: {
+          connect: {
+            id: parseInt(values.shelf),
+          },
+        },
+        author: {
+          connect: {
+            id: parseInt(values.author),
+          },
         },
       },
-      author: {
-        connect: {
-          id: parseInt(values.author),
-        },
-      },
-    },
-  });
-
-  res.send({ bookId: book.id });
+    });
+    res.send({ bookId: book.id });
+  } catch (err) {
+    res.json({ error: "Something went wrong" });
+  }
 });
