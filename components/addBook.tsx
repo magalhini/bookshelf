@@ -18,9 +18,14 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
+type AuthorResponse = {
+  authorId: number;
+};
+
 type AddBookProps = {
   onSave(bookData: any): Promise<void>;
   onCancel(): void;
+  onAuthorSave(name: string): Promise<{ authorId: number }>;
   authors: Author[];
   shelves: Shelf[];
   error: string;
@@ -29,10 +34,21 @@ type AddBookProps = {
 type AddAuthorModalProps = {
   isOpen: boolean;
   onSave(): void;
+  onAuthorSave(name: string): Promise<AuthorResponse>;
   onClose(): void;
 };
 
-const AddAuthorModal: React.FC<AddAuthorModalProps> = ({ isOpen, onClose }) => {
+const AddAuthorModal: React.FC<AddAuthorModalProps> = ({
+  isOpen,
+  onClose,
+  onAuthorSave,
+}) => {
+  const handleAddAuthor = async (props) => {
+    const authorId = await onAuthorSave(props);
+    if (authorId) {
+      onClose();
+    }
+  };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -40,26 +56,25 @@ const AddAuthorModal: React.FC<AddAuthorModalProps> = ({ isOpen, onClose }) => {
         <ModalHeader>Add a new author</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Formik initialValues={{ name: "" }} onSubmit={() => {}}>
+          <Formik initialValues={{ name: "" }} onSubmit={handleAddAuthor}>
             {(props: FormikProps<any>) => (
               <form onSubmit={props.handleSubmit}>
                 <FormControl mb="5">
                   <FormLabel htmlFor="author">Author name</FormLabel>
                   <InputControl name="name" placeholder="Author name" />
                 </FormControl>
+                <ModalFooter>
+                  <Button type="submit" colorScheme="blue" mr={3}>
+                    Save author
+                  </Button>
+                  <Button onClick={onClose} variant="ghost">
+                    Cancel
+                  </Button>
+                </ModalFooter>
               </form>
             )}
           </Formik>
         </ModalBody>
-
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3}>
-            Save author
-          </Button>
-          <Button onClick={onClose} variant="ghost">
-            Cancel
-          </Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );
@@ -68,6 +83,7 @@ const AddAuthorModal: React.FC<AddAuthorModalProps> = ({ isOpen, onClose }) => {
 const AddBookForm: React.FC<AddBookProps> = ({
   onSave,
   onCancel,
+  onAuthorSave,
   authors,
   shelves,
   error,
@@ -87,13 +103,18 @@ const AddBookForm: React.FC<AddBookProps> = ({
 
   return (
     <>
-      <AddAuthorModal isOpen={isOpen} onClose={onClose} onSave={() => {}} />
+      <AddAuthorModal
+        onAuthorSave={onAuthorSave}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSave={() => {}}
+      />
 
       <Formik initialValues={initialValues} onSubmit={onSave}>
         {(props: FormikProps<any>) => (
           <form onSubmit={props.handleSubmit}>
             <FormControl mb="4">
-              <FormLabel htmlFor="shelf">Bookshelf:</FormLabel>
+              <FormLabel htmlFor="shelf">Bookshelf</FormLabel>
               <Select placeholder="Select option" name="shelf" id="shelf">
                 {shelves.map((shelf) => {
                   return (
@@ -122,7 +143,7 @@ const AddBookForm: React.FC<AddBookProps> = ({
             <FormControl>
               <FormLabel htmlFor="author">Author</FormLabel>
               <SelectControl
-                selectProps={{ placeholder: "Select option" }}
+                selectProps={{ placeholder: "Select an author" }}
                 name="author"
                 id="author"
               >

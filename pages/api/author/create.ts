@@ -7,19 +7,21 @@ export default validateRoute(async (req, res, user) => {
   }
 
   const values = JSON.parse(req.body);
-  console.log(values);
 
-  // todo: error handling
   if (!values.name || values.name?.trim() === "") {
     res.status(422).send("Error, author name must not be blank");
     return;
   }
 
-  const author = await prisma.author.create({
-    data: {
-      name: values.name,
-    },
-  });
+  try {
+    const author = await prisma.author.create({
+      data: {
+        name: values.name,
+      },
+    });
 
-  res.send({ authorId: author.id });
+    res.send({ authorId: author.id, status: res.statusCode });
+  } catch (err) {
+    res.json({ error: "Something went wrong" });
+  }
 });
